@@ -472,7 +472,15 @@ gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8002
 
 **Made for Team Digi Shakti - Smart India Hackathon (SIH)**
 
-**End to end developed and produced by me with the help of teammate Akshat Sharma**
+**End to end developed and produced by me as Tech System Lead & Full Stack Architect**
+
+### 🙏 Special Thanks to Team Members:
+
+- **Akshat Sharma**
+- **Mayank Saini**
+- **Deepak Singh**
+- **Garima**
+- **Lily**
 
 ---
 

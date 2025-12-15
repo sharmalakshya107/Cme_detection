@@ -1,398 +1,470 @@
-# Frontend - CME Detection & Space Weather Monitoring Dashboard
+# Backend - CME Detection & Space Weather Monitoring API
 
 **Made for Team Digi Shakti - Smart India Hackathon (SIH)**
 
-This is the React-based frontend application that provides an interactive, real-time dashboard for space weather monitoring and CME detection. Built with modern web technologies for optimal performance and user experience.
+This is the FastAPI backend server that powers the CME Detection and Space Weather Monitoring System. It provides RESTful API endpoints for real-time space weather data, CME detection, forecasting, and satellite data analysis.
 
 ## 🎯 Overview
 
-The frontend is a single-page application (SPA) that provides:
-- Real-time space weather data visualization
-- Interactive 3D animations for space weather parameters
-- CME detection and prediction interfaces
-- Geomagnetic storm monitoring
-- Satellite field data prediction
-- Historical data analysis and charts
-- Responsive design for all devices
+The backend is built using FastAPI and provides comprehensive APIs for:
+- Real-time space weather data fetching from NOAA
+- CME (Coronal Mass Ejection) detection using machine learning algorithms
+- 7-day space weather forecasting using LSTM models
+- Geomagnetic storm monitoring and prediction
+- Satellite field data matching and CME probability calculation
+- Historical data analysis and visualization
 
 ## 🛠️ Tech Stack
 
-### Core Framework
-- **React 18.3.1**: Modern UI library with hooks and concurrent features
-- **TypeScript**: Type-safe JavaScript for better development experience
-- **Vite 5.4.1**: Lightning-fast build tool and dev server
-
-### UI Libraries
-- **Shadcn UI**: Beautiful, accessible component library built on Radix UI
-- **Tailwind CSS 3.4.11**: Utility-first CSS framework
-- **Framer Motion 12.23.24**: Smooth animations and page transitions
-- **Lucide React**: Modern icon library
-
-### Data Visualization
-- **Recharts 2.12.7**: Composable charting library
-- **Chart.js 4.5.1**: Flexible charting with react-chartjs-2
-- **Three.js 0.160.0**: 3D graphics and animations
-- **@react-three/fiber**: React renderer for Three.js
-- **@react-three/drei**: Useful helpers for react-three/fiber
-
-### State Management & Data Fetching
-- **@tanstack/react-query 5.56.2**: Powerful data synchronization
-- **React Router DOM 6.26.2**: Client-side routing
-
-### Form Handling
-- **React Hook Form 7.53.0**: Performant forms with easy validation
-- **Zod 3.23.8**: TypeScript-first schema validation
+- **FastAPI 0.104.1**: Modern, fast web framework for building APIs
+- **Python 3.11+**: Core programming language
+- **Uvicorn**: ASGI server for running FastAPI
+- **Pandas & NumPy**: Data manipulation and numerical computing
+- **scikit-learn**: Machine learning algorithms for CME detection
+- **SQLAlchemy**: Database ORM (PostgreSQL support)
+- **Requests & aiohttp**: HTTP clients for external API calls
+- **cdflib**: CDF file parsing for space weather data
+- **BeautifulSoup4**: Web scraping for NOAA data
+- **Matplotlib & Plotly**: Data visualization and chart generation
 
 ## 📋 Prerequisites
 
-- **Node.js 18+** and npm
-- Modern web browser (Chrome, Firefox, Edge, Safari)
-- Backend server running on `http://localhost:8002`
+- Python 3.11 or higher
+- pip (Python package manager)
+- PostgreSQL (optional, for database features)
+- Virtual environment (recommended)
 
 ## 🚀 Installation
 
-### Step 1: Navigate to Frontend Directory
+### Step 1: Navigate to Backend Directory
 
 ```bash
-cd frontend
+cd backend
 ```
 
-### Step 2: Install Dependencies
+### Step 2: Create Virtual Environment
 
 ```bash
-npm install
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# Linux/Mac
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-### Step 3: Configure API Endpoint
+### Step 3: Install Dependencies
 
-Edit `src/lib/api.ts` to set the backend API URL:
-
-```typescript
-const API_BASE_URL = 'http://localhost:8002';
+```bash
+pip install -r requirements.txt
 ```
 
-## 🏃 Running the Application
+### Step 4: Configure Environment (Optional)
+
+Create a `.env` file in the backend directory for database configuration:
+
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/cme_detection
+```
+
+## 🏃 Running the Server
 
 ### Development Mode
 
 ```bash
-npm run dev
+python main.py
 ```
 
-The application will start on `http://localhost:8080`
+The server will start on `http://localhost:8002`
 
-### Production Build
-
-```bash
-npm run build
-```
-
-Build output will be in the `dist/` directory.
-
-### Preview Production Build
+### Production Mode
 
 ```bash
-npm run preview
+uvicorn main:app --host 0.0.0.0 --port 8002 --workers 4
 ```
 
 ## 📁 Project Structure
 
 ```
-frontend/
-├── src/
-│   ├── App.tsx                 # Main app component with routing
-│   ├── main.tsx               # Application entry point
-│   ├── index.css              # Global styles and space theme
-│   │
-│   ├── pages/                 # Page components
-│   │   ├── Index.tsx          # Main dashboard
-│   │   ├── Phase1.tsx         # Live space weather data
-│   │   ├── Phase2.tsx         # CME prediction
-│   │   ├── Phase3.tsx         # Live geomagnetic storm
-│   │   ├── Phase4.tsx         # Geomagnetic storm prediction
-│   │   ├── Phase5.tsx         # Video & image animation
-│   │   ├── FieldDataPrediction.tsx  # Satellite CME prediction
-│   │   ├── AllRecentCMEEvents.tsx   # Recent CME events
-│   │   ├── NotFound.tsx       # 404 page
-│   │   └── Phase1Helpers.ts   # Phase 1 helper functions
-│   │
-│   ├── components/            # Reusable components
-│   │   ├── ui/                # Shadcn UI components
-│   │   │   ├── button.tsx
-│   │   │   ├── card.tsx
-│   │   │   ├── dialog.tsx
-│   │   │   └── ... (40+ components)
-│   │   │
-│   │   ├── ParticleDataChart.tsx        # Particle data visualization
-│   │   ├── CMEDetectionPanel.tsx         # CME detection interface
-│   │   ├── ParametersInfo.tsx            # Parameter information cards
-│   │   ├── ForecastPredictionsPanel.tsx  # Forecast visualization
-│   │   ├── DataImportExport.tsx           # Data import/export
-│   │   ├── RawDataViewer.tsx              # Raw data display
-│   │   ├── ParameterSpecificAnimation.tsx  # 3D parameter animations
-│   │   ├── GeomagneticField3D.tsx         # 3D geomagnetic field
-│   │   ├── SolarWind3D.tsx                # 3D solar wind visualization
-│   │   ├── SpaceBackground.tsx            # Animated space background
-│   │   ├── IntroAnimation.tsx             # Landing page animation
-│   │   └── ... (more components)
-│   │
-│   ├── lib/                   # Utilities and configurations
-│   │   ├── api.ts             # API client and endpoints
-│   │   └── utils.ts           # Utility functions
-│   │
-│   └── hooks/                 # Custom React hooks
-│       ├── use-mobile.tsx     # Mobile detection hook
-│       └── use-toast.ts       # Toast notification hook
+backend/
+├── main.py                      # Main FastAPI application
+├── noaa_realtime_data.py        # NOAA Space Weather data fetcher
+├── database.py                  # Database models and configuration
+├── db_service.py               # Database service layer
+├── omniweb_data_fetcher.py     # NASA OMNIWeb data fetcher
+├── config.yaml                 # Configuration file
+├── requirements.txt            # Python dependencies
 │
-├── public/                    # Static assets
-├── index.html                 # HTML template
-├── package.json               # Dependencies and scripts
-├── vite.config.ts             # Vite configuration
-├── tailwind.config.ts         # Tailwind CSS configuration
-├── tsconfig.json              # TypeScript configuration
-└── postcss.config.js          # PostCSS configuration
+├── api/                        # API modules
+│   └── model_accuracy.py       # Model accuracy endpoints
+│
+├── scripts/                    # Core detection and ML scripts
+│   ├── comprehensive_cme_detector.py    # Main CME detection algorithm
+│   ├── halo_cme_detector.py            # Halo CME detection
+│   ├── real_data_sync.py               # Real-time data synchronization
+│   ├── data_validator.py               # Data validation utilities
+│   ├── swis_data_loader.py              # SWIS data loader
+│   ├── cactus_scraper.py                # CACTUS CME scraper
+│   └── 7_days_forecast/                # Forecast model scripts
+│       ├── train_model.py              # LSTM model training
+│       ├── forecast_predictor.py       # Forecast prediction
+│       └── model files (.npy, .pkl)    # Trained model files
+│
+├── data/                       # Data storage
+│   └── aditya_l1/             # Aditya L1 mission data
+│
+├── downloads/                  # Downloaded data files
+├── output/                     # Generated outputs (CSV, etc.)
+└── venv/                       # Virtual environment (gitignored)
 ```
 
-## 🎨 Features
+## 🔌 API Endpoints
 
-### Main Dashboard (`/`)
-- Real-time mission status
-- Key metrics overview
-- System health monitoring
-- Quick navigation to all phases
-- Recent activity feed
+### Data Endpoints
 
-### Phase 1: Live Space Weather Data (`/phase1`)
-- **4-Grid Layout**:
-  - Grid 1: Parameter info card with current values
-  - Grid 2: Real-time 24-hour trend graph
-  - Grid 3: 3D visualization/animations
-  - Grid 4: Effects & safety analysis
-- **15+ Parameters**: Kp, DST, Speed, Density, Bz, Bt, Temperature, etc.
-- **Auto-refresh**: Updates every 60 seconds
-- **Dynamic Analysis**: Real-time safety recommendations
+#### `GET /api/data/summary`
+Get comprehensive data summary and system status.
 
-### Phase 2: CME Prediction (`/phase2`)
-- CME arrival time prediction
-- Direction forecasting
-- Forecast visualizations
-- Historical comparison
-
-### Phase 3: Live Geomagnetic Storm (`/phase3`)
-- Real-time geomagnetic monitoring
-- Storm intensity tracking
-- Current storm effects
-- Alert notifications
-
-### Phase 4: Geomagnetic Storm Prediction (`/phase4`)
-- Time regression models
-- Storm intensity prediction
-- Future timeline visualization
-- Risk assessment
-
-### Phase 5: Video & Image Animation (`/phase5`)
-- Combined CME + Storm animations
-- Video generation
-- Image export capabilities
-- GIF creation
-
-### Field Data Prediction (`/phase`)
-- Satellite selection by NORAD ID
-- Coordinate matching with NOAA wind data
-- CME probability calculation
-- Risk level assessment
-- Score breakdown visualization
-
-### Recent CME Events (`/recent-cme-events`)
-- Complete list of recent CME events
-- Detailed detection results
-- Event timeline
-- Analysis summaries
-
-## 🎨 Design System
-
-### Color Scheme
-- **Background**: Deep space blue-black (`#0B0B15`)
-- **Primary**: Electric Purple (`#BD00FF`)
-- **Secondary**: Cyan (`#00F0FF`)
-- **Accent**: Hot Pink (`#FF0099`)
-- **Neon Colors**: Blue, Pink, Purple, Green
-
-### Typography
-- **Font Family**: System fonts (San Francisco, Segoe UI, Roboto)
-- **Headings**: Bold, gradient text with neon effects
-- **Body**: Regular weight, high contrast for readability
-
-### Components
-- **Glassmorphism**: Frosted glass effect on cards
-- **Neon Effects**: Glowing text and borders
-- **Animations**: Smooth transitions with Framer Motion
-- **3D Visualizations**: Interactive Three.js scenes
-
-## 🔌 API Integration
-
-### API Client Configuration
-
-Located in `src/lib/api.ts`:
-
-```typescript
-const API_BASE_URL = 'http://localhost:8002';
-
-export const api = {
-  getDataSummary: () => fetch(`${API_BASE_URL}/api/data/summary`),
-  getRealtimeData: () => fetch(`${API_BASE_URL}/api/data/realtime`),
-  // ... more endpoints
-};
+**Response:**
+```json
+{
+  "success": true,
+  "total_records": 254228,
+  "date_range": {
+    "start": "1995-01-01",
+    "end": "2024-12-31"
+  },
+  "parameters": ["velocity", "density", "temperature", "bz"],
+  "system_status": "operational"
+}
 ```
 
-### Data Fetching
+#### `GET /api/data/realtime`
+Get real-time solar wind data from NOAA.
 
-Uses React Query for efficient data fetching:
-
-```typescript
-const { data, isLoading, error } = useQuery({
-  queryKey: ['realtime'],
-  queryFn: api.getRealtimeData,
-  refetchInterval: 60000 // Refresh every 60 seconds
-});
+**Response:**
+```json
+{
+  "success": true,
+  "data_source": "NOAA Combined",
+  "timestamp": "2025-01-XX...",
+  "solar_wind": {
+    "speed": 450.0,
+    "density": 5.2,
+    "temperature": 105000,
+    "bz_gsm": -3.2
+  }
+}
 ```
 
-## 🎭 Animations
+#### `GET /api/data/particle`
+Get particle data for visualization.
 
-### Page Transitions
-- Smooth page transitions using Framer Motion
-- AnimatePresence for exit animations
-- Route-based animation keys
+#### `POST /api/data/upload`
+Upload CDF file for analysis.
 
-### 3D Visualizations
-- **Geomagnetic Field**: Rotating Earth with field lines
-- **Solar Wind**: Particle streams from Sun to Earth
-- **Parameter Animations**: Dynamic visualizations based on values
+**Request:**
+- `file`: CDF file (multipart/form-data)
+- `run_detection`: boolean (optional)
 
-### Component Animations
-- Staggered entrance animations
-- Hover effects on cards
-- Loading skeletons
-- Toast notifications
+### CME Detection Endpoints
 
-## 📱 Responsive Design
+#### `GET /api/cme/recent`
+Get recent CME events with detection details.
 
-### Breakpoints
-- **Mobile**: < 768px (stacked layout)
-- **Tablet**: 768px - 1024px (2-column layout)
-- **Desktop**: > 1024px (4-grid layout)
+**Query Parameters:**
+- `days`: Number of days to look back (default: 14)
+- `limit`: Maximum number of events (default: 50)
 
-### Mobile Optimizations
-- Touch-friendly buttons
-- Swipe gestures
-- Optimized image loading
-- Reduced animations on low-end devices
+#### `POST /api/ml/analyze-cdf`
+Analyze uploaded CDF file for CME detection.
+
+**Request:**
+- `file`: CDF file
+
+**Response:**
+```json
+{
+  "success": true,
+  "detection_results": {
+    "total_events": 3,
+    "all_events": [...],
+    "analysis_summary": "..."
+  }
+}
+```
+
+### Geomagnetic Data Endpoints
+
+#### `GET /api/geomagnetic/storm/live`
+Get live geomagnetic indices (Kp, DST, Ap, F10.7).
+
+#### `GET /api/forecast/predictions`
+Get 7-day space weather forecast predictions.
+
+**Response:**
+```json
+{
+  "success": true,
+  "forecast": {
+    "parameters": ["Dst", "Kp", "Ap", "Sunspot"],
+    "timestamps": [...],
+    "predictions": {...}
+  },
+  "model_accuracy": 97.3
+}
+```
+
+### Satellite Data Endpoints
+
+#### `GET /api/satellites`
+Get list of available satellites from external API.
+
+**Response:**
+```json
+{
+  "success": true,
+  "satellites": [
+    {
+      "norad_id": 25544,
+      "name": "ISS",
+      "object_type": "PAYLOAD"
+    }
+  ]
+}
+```
+
+#### `GET /api/satellites/{norad_id}`
+Get detailed information for a specific satellite.
+
+#### `GET /api/satellites/{norad_id}/cme-prediction`
+Get CME probability for satellite based on coordinate matching with NOAA wind data.
+
+**Query Parameters:**
+- `threshold`: Probability threshold (default: 0.5)
+
+**Response:**
+```json
+{
+  "success": true,
+  "satellite": {...},
+  "noaa_match": {
+    "distance": 2.3,
+    "wind_data": {...}
+  },
+  "cme_probability": 0.75,
+  "risk_level": "moderate",
+  "scores": {
+    "speed": 0.8,
+    "density": 0.7,
+    "temperature": 0.6,
+    "bz": 0.9
+  }
+}
+```
+
+### NOAA Integration Endpoints
+
+#### `GET /api/noaa/alerts`
+Get space weather alerts from NOAA.
+
+#### `GET /api/noaa/solar-flares`
+Get solar flare data.
+
+#### `GET /api/noaa/images/{source}`
+Get image sequences for animations.
+
+**Path Parameters:**
+- `source`: `lasco-c3`, `lasco-c2`, `suvi-094`, `enlil`, `ovation-north`, `ovation-south`
+
+**Query Parameters:**
+- `count`: Number of images (default: 1)
+
+## 🧠 Core Algorithms
+
+### CME Detection Algorithm
+
+The system uses a multi-parameter approach:
+
+1. **Velocity Threshold Detection**: Identifies high-speed solar wind streams (>600 km/s)
+2. **Density Spike Detection**: Detects sudden density increases
+3. **Temperature Anomaly Detection**: Monitors proton temperature variations
+4. **Bz Component Analysis**: Tracks southward magnetic field (Bz < -10 nT)
+5. **Composite Scoring**: Weighted combination of all parameters
+
+**Location**: `scripts/comprehensive_cme_detector.py`
+
+### Forecast Model
+
+- **Model Type**: LSTM (Long Short-Term Memory) neural network
+- **Training Data**: 29 years of historical space weather data (1995-2024)
+- **Parameters**: DST Index, Kp Index, Ap Index, Sunspot Number
+- **Accuracy**: 97.3% overall accuracy
+- **Forecast Period**: 7 days ahead
+- **Location**: `scripts/7_days_forecast/`
+
+### Composite Index Calculation
+
+Uses Principal Component Analysis (PCA) to combine:
+- DST Index (Disturbance Storm Time)
+- Kp Index (Planetary K-index)
+- Ap Index (Daily geomagnetic activity)
+- Sunspot Number
+
+**Location**: `main.py` (lines 2895-3135)
 
 ## 🔧 Configuration
 
-### Vite Configuration (`vite.config.ts`)
-- Port: 8080
-- Host: `::` (all interfaces)
-- Path aliases: `@/` → `src/`
-- History API fallback for routing
+### config.yaml
 
-### Tailwind Configuration (`tailwind.config.ts`)
-- Custom space theme colors
-- Extended animations
-- Custom keyframes
-- Dark mode support
+Edit `config.yaml` to configure:
+- Database connection settings
+- NOAA API endpoints
+- Model parameters
+- Detection thresholds
+- Data source preferences
 
-### TypeScript Configuration
-- Strict mode enabled
-- Path aliases configured
-- React JSX support
+### Environment Variables
 
-## 🧪 Development
+Create `.env` file for sensitive configuration:
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/cme_detection
+NOAA_API_KEY=your_api_key_here
+```
 
-### Code Structure
-- **Components**: Reusable UI components
-- **Pages**: Route-level components
-- **Hooks**: Custom React hooks
-- **Utils**: Helper functions
-- **Lib**: External integrations
+## 📊 Data Sources
 
-### Best Practices
-- TypeScript for type safety
-- Component composition
-- Custom hooks for logic reuse
-- Error boundaries for error handling
-- Loading states for async operations
+### NOAA Space Weather Prediction Center
+- **Base URL**: `https://services.swpc.noaa.gov/`
+- **Endpoints**:
+  - Solar Wind: `/products/solar-wind/`
+  - Geomagnetic: `/products/geospace/`
+  - Images: `/products/animations/`
+  - Alerts: `/products/alerts/`
+
+### NASA OMNIWeb
+- Historical space weather data
+- Multi-spacecraft merged data
+
+### External APIs
+- Satellite API: `https://sat-api-k1ga.onrender.com/api/satellites/`
+- Aditya L1 mission data (when available)
+
+## 🧪 Testing
+
+### Test Individual Endpoints
+
+```bash
+# Test data summary
+curl http://localhost:8002/api/data/summary
+
+# Test realtime data
+curl http://localhost:8002/api/data/realtime
+
+# Test CME detection
+curl http://localhost:8002/api/cme/recent?days=7
+```
+
+### Run Test Scripts
+
+```bash
+# Test NOAA data fetching
+python test_all_params.py
+
+# Test CDF upload
+python test_cdf_upload.py
+
+# Test data validation
+python scripts/test_data_validation.py
+```
 
 ## 🐛 Troubleshooting
 
 ### Port Already in Use
-Vite will automatically use the next available port.
 
-### Module Not Found
 ```bash
-npm install
+# Windows: Find and kill process
+netstat -ano | findstr :8002
+taskkill /PID <PID> /F
+
+# Linux/Mac: Find and kill process
+lsof -ti:8002 | xargs kill -9
 ```
 
-### Build Errors
-- Check Node.js version (requires 18+)
-- Clear `node_modules` and reinstall
-- Check TypeScript errors
+### Database Connection Errors
 
-### API Connection Errors
-- Ensure backend is running on port 8002
-- Check CORS configuration in backend
-- Verify API_BASE_URL in `src/lib/api.ts`
+- Ensure PostgreSQL is running
+- Check `DATABASE_URL` in `.env` or `config.yaml`
+- Verify database credentials
 
-### 3D Performance Issues
-- Reduce animation quality on low-end devices
-- Disable shadows for better performance
-- Use simpler geometries
+### Missing Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### CDF File Parsing Errors
+
+- Ensure `cdflib` is installed: `pip install cdflib`
+- Check CDF file format and version
+- Verify file contains required variables
+
+### NOAA API Errors
+
+- Check internet connection
+- Verify NOAA endpoints are accessible
+- Some endpoints may have rate limits
+
+## 📈 Performance Optimization
+
+- **Caching**: Implement Redis for frequently accessed data
+- **Database Indexing**: Add indexes on frequently queried columns
+- **Async Operations**: Use async/await for I/O-bound operations
+- **Connection Pooling**: Configure SQLAlchemy connection pool
+- **Rate Limiting**: Implement rate limiting for external API calls
+
+## 🔒 Security Considerations
+
+- **CORS**: Configured for frontend origin only
+- **Input Validation**: All inputs validated using Pydantic models
+- **File Upload**: Size limits and type validation for CDF files
+- **Error Handling**: Generic error messages to prevent information leakage
+
+## 📝 Logging
+
+Logs are written to console with different levels:
+- **INFO**: General information
+- **WARNING**: Non-critical issues
+- **ERROR**: Critical errors
+- **DEBUG**: Detailed debugging information
+
+Configure logging level in `main.py`:
+```python
+logging.basicConfig(level=logging.INFO)
+```
 
 ## 🚀 Deployment
-
-### Build for Production
-
-```bash
-npm run build
-```
-
-### Deploy to Static Hosting
-
-The `dist/` folder can be deployed to:
-- **Vercel**: Automatic deployment
-- **Netlify**: Drag and drop `dist/` folder
-- **GitHub Pages**: Use GitHub Actions
-- **AWS S3**: Upload `dist/` contents
 
 ### Docker Deployment
 
 ```bash
-docker build -t cme-frontend .
-docker run -p 8080:80 cme-frontend
+docker build -t cme-backend .
+docker run -p 8002:8002 cme-backend
 ```
 
-## 📊 Performance Optimization
+### Production Server
 
-- **Code Splitting**: Automatic route-based code splitting
-- **Lazy Loading**: Images and components loaded on demand
-- **Memoization**: React.memo for expensive components
-- **Virtual Scrolling**: For large lists
-- **Image Optimization**: WebP format support
-
-## 🔒 Security
-
-- **Input Validation**: All user inputs validated
-- **XSS Protection**: React escapes content by default
-- **HTTPS**: Use HTTPS in production
-- **CORS**: Configured in backend
+Use Gunicorn with Uvicorn workers:
+```bash
+gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8002
+```
 
 ## 📚 Additional Resources
 
-- [React Documentation](https://react.dev/)
-- [Vite Documentation](https://vitejs.dev/)
-- [Tailwind CSS Documentation](https://tailwindcss.com/)
-- [Three.js Documentation](https://threejs.org/)
-- [Framer Motion Documentation](https://www.framer.com/motion/)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [NOAA Space Weather APIs](https://www.swpc.noaa.gov/)
+- [NASA OMNIWeb](https://omniweb.gsfc.nasa.gov/)
 
 ---
 
@@ -400,9 +472,17 @@ docker run -p 8080:80 cme-frontend
 
 **Made for Team Digi Shakti - Smart India Hackathon (SIH)**
 
-**End to end developed and produced by me with the help of teammate Akshat Sharma**
+**End to end developed and produced by me as Tech System Lead & Full Stack Architect**
+
+### 🙏 Special Thanks to Team Members:
+
+- **Akshat Sharma**
+- **Mayank Saini**
+- **Deepak Singh**
+- **Garima**
+- **Lily**
 
 ---
 
-**Note**: This frontend is part of the CME Detection & Space Weather Monitoring System. For backend documentation, see `../backend/README.md`.
+**Note**: This backend is part of the CME Detection & Space Weather Monitoring System. For frontend documentation, see `../frontend/README.md`.
 
