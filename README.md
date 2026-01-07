@@ -288,7 +288,7 @@ This project is developed for Smart India Hackathon (SIH) presentation.
 - **Garima**
 - **Lily**
 
-This project represents a complete full-stack solution for space weather monitoring and CME detection, developed from concept to deployment for the Smart India Hackathon 2024.
+This project represents a complete full-stack solution for space weather monitoring and CME detection, developed from concept to deployment for the Smart India Hackathon 2025.
 
 ## 🙏 Acknowledgments
 
