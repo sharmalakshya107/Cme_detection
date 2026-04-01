@@ -19,7 +19,7 @@ import SpaceBackground from "./components/SpaceBackground";
 
 const queryClient = new QueryClient();
 
-// Create an inner component to use the useLocation hook
+// Create an inner component to use the useLocation hook.
 const AnimatedRoutes = () => {
   const location = useLocation();
 
